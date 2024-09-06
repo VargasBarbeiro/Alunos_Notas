@@ -1,0 +1,88 @@
+  -- drop database Escola;
+-- Desabilitar atualizações seguras para permitir operações de exclusão e atualização
+set SQL_SAFE_UPDATES = 0;
+
+-- Criação do Banco de Dados e Seleção
+create database if not exists Escola;
+use Escola;
+
+-- Criação da tabelas 
+-- Tabela Alunos
+create table if not exists Alunos (
+    id_aluno int auto_increment primary key,
+    Nome_aluno varchar (100) not null,
+    Data_nacimento date not null,
+    endereco varchar (100)
+);
+
+-- Tabela cursos
+create table if not exists Cursos (
+  id_curso int auto_increment primary key,
+  Nome_curso varchar (100) not null,
+  Descricao varchar (100)
+);
+ 
+-- Tabela Notas
+create table if not exists Notas (
+  id_notas int auto_increment primary key,
+  id_aluno int ,
+  id_curso int ,
+  Nota decimal(5, 2),
+  foreign key (id_aluno) references Alunos(id_aluno),
+  foreign key (id_curso) references Cursos(id_curso)
+  );
+  
+ -- Insira 3 alunos de Dados na tabela Alunos 
+ insert into Alunos ( Nome_aluno, Data_nacimento, endereco) values
+  ('AAAA', '2012/09/02', 'Centro'),
+  ('BBBB', '2013/09/02', 'Sul'),
+  ('CCCC', '2014/09/02', 'Norte');
+
+ -- Insira 3 curso de Dados na tabela Cursos
+ insert into Cursos ( Nome_curso, Descricao) values
+ ('Matematica', '+-*/=' ),
+ ('fisica', '@#$%¨&*'),
+ ('Portugol', 'sesenao') ;
+ 
+  -- Insira 5 notas de Dados na tabela Notas
+  insert into Notas ( id_aluno, id_curso, Nota) values 
+  ('1', '1', '8.5'),
+  ('1', '2', '7.0'),
+  ('2', '1', '9.0'),
+  ('2', '3', '6.5'),
+  ('3', '2', '8.0');
+    
+  -- Para listar todos os alunos juntamente com as notas que eles obtiveram em cada curso
+  select a.Nome_aluno, c.Nome_curso, n.Nota
+  from Alunos a
+  join Notas n on  a.id_aluno = n.id_aluno
+  join Cursos c on n.id_curso = c.id_curso;
+
+  
+  -- Para calcular a média das notas para cada curso
+ select c.Nome_curso, avg (n.Nota) as media_nota
+ from Notas n
+ join Cursos c on n.id_curso = c.id_curso
+ group by c.Nome_curso;
+  
+  -- Para atualizar a nota de um aluno em um curso específico
+  update  Notas 
+  set nota = 9.0
+  where id_aluno = 1 and id_curso = 2;
+  
+  -- Para modificar o endereço de um aluno para um novo endereço
+  update Alunos 
+  set endereco = 'Rua ddddd, 4444'
+  where id_aluno =2;
+  
+-- Para excluir um aluno e todas as suas notas
+  delete from Notas where id_aluno = 1;
+  delete from  Alunos where id_aluno = 1;
+
+
+-- Para remover um curso e todas as notas e curso
+  delete from Notas where id_curso =1;
+  delete from Cursos where id_curso = 1;
+
+
+
