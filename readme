@@ -1,1 +1,4 @@
-123
+Sistema utilizando SQL para gerenciar o registro de alunos,
+cursos e suas respectivas notas. O sistema permitir a criação de um banco de dados,
+tabelas associadas, inserção, consulta, atualização e exclusão de dados, 
+além de relacionamentos entre as tabelas.
